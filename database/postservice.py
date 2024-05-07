@@ -43,7 +43,7 @@ def public_post_db(user_id, main_text, hashtag=None):
 # Добавление комментария
 def public_comment_db(user_id, post_id, text):
     db = next(get_db())
-    new_comment = Comment(user_id=user_id, post_id=post_id, text=text, created_at=datetime.now())
+    new_comment = Comment(user_id=user_id, post_id=post_id, text=text, comment_date=datetime.now())
     db.add(new_comment)
     db.commit()
     return True
@@ -77,7 +77,7 @@ def delete_exact_comment_db(comment_id):
 # Создание хэштэга
 def add_hashtag(name):
     db = next(get_db())
-    new_hashtag = Hashtag(hashtag_name=name, reg_date=datetime.now())
+    new_hashtag = Hashtag(hashtag_name=name, hashtag_date=datetime.now())
     db.add(new_hashtag)
     db.commit()
     return True
@@ -85,11 +85,11 @@ def add_hashtag(name):
 # Получение определенного хэштега
 def get_exact_hashtag_db(hashtag_name):
     db = next(get_db())
-    exact_hashtag = db.query(UserPost).filter_by(hashtag=hashtag_name).all()
+    exact_hashtag = db.query(UserPost).filter_by(hashtag_name=hashtag_name).all()
     return exact_hashtag
 
 # Получение рекомендаций по хэштегам
 def get_some_hashtag_db(size, hashtag_name):
     db = next(get_db())
-    posts = db.query(UserPost).filter_by(hashtag=hashtag_name).all()
+    posts = db.query(UserPost).filter_by(hashtag_name=hashtag_name).all()
     return posts[:size]
