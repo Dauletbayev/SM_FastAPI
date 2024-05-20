@@ -2,17 +2,6 @@ from database.models import User
 from database import get_db
 from datetime import datetime
 
-def register_user_db(name, email, phone_number, password, user_city=None, birthday=None):
-    db = next(get_db())
-    checker = check_user_db(name, phone_number, email)
-    if checker == True:
-        new_user = User(name=name, email=email, phone_number=phone_number, password=password, user_city=user_city,
-                        birthday=birthday, reg_day=datetime.now())
-        db.add(new_user)
-        db.commit()
-        return new_user.id
-    return checker
-
 def check_user_db(name, phone_number, email):
     db = next(get_db())
     checker_name = db.query(User).filter_by(name=name).first()
@@ -25,6 +14,17 @@ def check_user_db(name, phone_number, email):
     elif checker_email:
         return 'почта занята'
     return True
+
+def register_user_db(name, email, phone_number, password, user_city=None, birthday=None):
+    db = next(get_db())
+    checker = check_user_db(name, phone_number, email)
+    if checker == True:
+        new_user = User(name=name, email=email, phone_number=phone_number, password=password, user_city=user_city,
+                        birthday=birthday, reg_day=datetime.now())
+        db.add(new_user)
+        db.commit()
+        return new_user.id
+    return checker
 
 def check_user_password_db(login, password):
     db = next(get_db())

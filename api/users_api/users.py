@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
-from typing import List, Dict
 from database.userservice import *
 import re
 
@@ -49,12 +48,9 @@ async def login_user(login: str, password: str):
 
 
 @users_router.put('/api/change_profile')
-async def change_user_profile(user_id : int, changeable_info: str, new_data: str):
+async def change_user_profile(user_id: int, changeable_info: str, new_data: str):
     data = change_user_data_db(user_id, changeable_info, new_data)
     if data:
         return {'status': 1, 'message': 'Данные успешно изменены'}
     return {'status': 0, 'message': 'Не удалось изменить информации'}
-
-
-
 
